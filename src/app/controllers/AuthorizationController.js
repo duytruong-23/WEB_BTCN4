@@ -4,8 +4,11 @@ require('dotenv').config({ path: './src/.env' });
 // const jwt = require('jsonwebtoken');
 const jwtH = require('../../helpers/JWT_helpers');
 const accountModel = require('../models/account');
-const CALLBACK_URL = "https://localhost:3000";
-const REDIRECT_URL = "https://localhost:3000";
+const userModel = require('../models/user');
+const bcryptH = require('../../helpers/bcrypt_helpers');
+
+const CALLBACK_URL = "http://localhost:3000";
+const AUTH_SERVER_URL = "https://localhost:3113";
 
 class AuthorizationController {
     /*
@@ -15,32 +18,33 @@ class AuthorizationController {
     async request(req, res, next) {
         try {
             if (!req.cookies['accessToken']) {
-                res.redirect(`https://localhost:54321/authorization/signin?callbackURL=${CALLBACK_URL}`,);
+                res.redirect(`${AUTH_SERVER_URL}/authorization/signin?callbackURL=${CALLBACK_URL}`,);
                 return;
             }
 
             if (jwtH.isExpired(req.cookies['accessToken'], process.env.ACCESS_TOKEN_SECRET)) {
                 const account = await accountModel.getAccount(req.cookies.username);
-                const refreshToken = account.refreshToken;
+                const refreshToken = account.Token;
+                const username = account.Username;
                 if (jwtH.isExpired(refreshToken, process.env.REFRESH_TOKEN_SECRET)) {
-                    res.redirect(`https://localhost:54321/authorization/signin?callbackURL=${CALLBACK_URL}`,);
+                    res.redirect(`${AUTH_SERVER_URL}/authorization/signin?callbackURL=${CALLBACK_URL}`,);
                     return;
                 }
 
-                const response = await fetch('https://localhost:54321/authorization/tokens', {
+                const response = await fetch(`${AUTH_SERVER_URL}/authorization/tokens`, {
                     method: 'POST',
                     headers: {
                         // 'Accept': 'application/json',
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        username: account.username,
+                        username
                     }),
                 });
                 const tokens = await response.json();
-                await accountModel.updateRefreshToken(account.username, tokens.refreshToken);
+                await accountModel.updateRefreshToken(username, tokens.refreshToken);
                 res.cookie("accessToken", tokens.accessToken);
-                res.cookie("username", account.username);
+                res.cookie("username", username);
             }
             res.redirect(CALLBACK_URL);
         } catch (err) {
@@ -48,27 +52,44 @@ class AuthorizationController {
         }
     }
 
-    //[POST] /authorization/callback
-    async callback(req, res, next) {
-        const accessToken = req.body.accessToken;
-        const refreshToken = req.body.refreshToken;
-
-        try {
-            const decoded = jwtH.verifyToken(refreshToken, process.env.REFRESH_TOKEN_SECRET);
-            const result = await accountModel.updateRefreshToken(decoded.username, refreshToken);
-            res.json({
-                redirectURL: REDIRECT_URL
-            });
-
-        } catch (error) {
-            next(error);
-        }
-
-
-    }
     /*
     ************** Authentication Server ************************
     */
+
+    //[GET] /authorization/signup
+    showSignUpForm(req, res, next) {
+        res.render('user/signup', {
+            layout: 'main2'
+        });
+    }
+
+    //[POST] /authorization/signup
+    async signUp(req, res, next) {
+        try {
+            let userDB = await userModel.getAccount(req.body.username);
+            if (userDB !== null) {
+                let err = new Error('Account has existed. Please sign in!');
+                next(err);
+                return;
+            }
+            let id = await userModel.getAutoId();
+            let password = await bcryptH.hashPassword(req.body.password);
+            const user = {
+                id: parseInt(id),
+                name: req.body.name,
+                username: req.body.username,
+                address: req.body.address,
+                password,
+            };
+            await userModel.writeUser(user);
+            res.redirect('/');
+        } catch (error) {
+            next(error)
+        }
+    }
+
+
+
     //[GET] /authorization/signin
     showSignInForm(req, res, next) {
         res.render('authorization/signin', {

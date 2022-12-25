@@ -15,7 +15,7 @@ const handlebars = require('./configs/HandlebarsConfig');
 
 
 const app = express();
-const port = 3000;
+const port = process.env.SERVER_PORT || 54321;
 
 app.use(cookieParser());
 

@@ -4,7 +4,7 @@
             <article class="card-body w-75">
                 <h4 class="card-title mt-3 text-center">Create Account</h4>
                 <p class="text-center">Get started with your free account</p>
-                <form method="post" action="/user/signup" id="signup-form">
+                <form method="post" action="/authorization/signup" id="signup-form">
                     <div class="form-group input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><b>Fullname:</b></span>
@@ -23,30 +23,11 @@
 
                     <div class="form-group input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text"> <b>Email:</b></span>
+                            <span class="input-group-text"> <b>Address:</b></span>
                         </div>
-                        <input id="email" name="email" class="form-control" placeholder="Email address" type="email">
+                        <input id="address" name="address" class="form-control" placeholder="Your Address" type="text">
                         <div class="form-message"></div>
                     </div> <!-- form-group// -->
-
-                    <div class="form-group input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><b>Birthdate:</b></span>
-                        </div>
-                        <input id="birthdate" name="birthdate" class="form-control" type="date">
-                        <div class="form-message"></div>
-                    </div> <!-- form-group// -->
-
-                    <div class="form-group input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"> <b>Role:</b> </span>
-                        </div>
-                        <select class="form-control" name="role">
-                            <option>User</option>
-                            <option>Admin</option>
-                        </select>
-                        <div class="form-message"></div>
-                    </div> <!-- form-group end.// -->
 
                     <div class="form-group input-group">
                         <div class="input-group-prepend">
@@ -84,18 +65,13 @@
             rules: [
                 Validator.isRequired('#fullname', 'Vui lòng nhập tên đầy đủ của bạn'),
                 Validator.isRequired('#username', 'Vui lòng nhập username'),
-                Validator.isRequired('#email', 'Vui lòng nhập email'),
-                Validator.isRequired('#birthdate', 'Vui lòng nhập ngày sinh'),
+                Validator.isRequired('#address', 'Vui lòng nhập email'),
                 Validator.isRequired('#password', 'Vui lòng nhập mật khẩu'),
                 Validator.isRequired('#repeat-password', 'Vui lòng xác nhận mật khẩu'),
 
                 Validator.isValidUsername('#username'),
                 Validator.isValidPassword('#password'),
-                Validator.isEmail('#email', 'email không hợp lệ'),
-                Validator.isValidBirthdate('#birthdate', 'Ngày sinh phải trên 18 tuổi'),
                 Validator.confirmPassword('#repeat-password', '#password', 'Mật khẩu xác nhận không hợp lệ'),
-
-
             ],
         })
     });

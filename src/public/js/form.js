@@ -197,8 +197,8 @@ Validator.isValidPassword = function (selector, message) {
     return {
         selector: selector,
         test: function (value) {
-            let regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
-            return regex.test(value) ? undefined : message || 'Mật khẩu có ít nhất 6 ký tự, có ít nhất một kí tự chữ cái'
+            let regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$/;
+            return regex.test(value) ? undefined : message || 'Mật khẩu có ít nhất 4 ký tự, có ít nhất một kí tự chữ cái'
         }
     };
 };
