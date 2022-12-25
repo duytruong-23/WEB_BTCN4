@@ -7,8 +7,8 @@ const accountModel = require('../models/account');
 const userModel = require('../models/user');
 const bcryptH = require('../../helpers/bcrypt_helpers');
 
-const CALLBACK_URL = "http://localhost:3000";
-const AUTH_SERVER_URL = "https://localhost:3113";
+const CALLBACK_URL = process.env.CALLBACK_URL;
+const AUTH_SERVER_URL = process.env.AUTH_SERVER_URL;
 
 class AuthorizationController {
     /*
@@ -59,7 +59,8 @@ class AuthorizationController {
     //[GET] /authorization/signup
     showSignUpForm(req, res, next) {
         res.render('user/signup', {
-            layout: 'main2'
+            layout: 'main2',
+            showHeader: false,
         });
     }
 
@@ -92,8 +93,10 @@ class AuthorizationController {
 
     //[GET] /authorization/signin
     showSignInForm(req, res, next) {
-        res.render('authorization/signin', {
-            callbackURL: req.query.callbackURL
+        res.render('user/signin', {
+            layout: 'main2',
+            callbackURL: req.query.callbackURL,
+            showHeader: false,
         });
     }
 
@@ -102,6 +105,7 @@ class AuthorizationController {
         const username = req.body.username;
         const password = req.body.password;
         const callbackURL = req.body.callbackURL;
+        const expAccessToken = req.body.expire;
         try {
             const account = await accountModel.getAccount(username);
             if (account === null) {
@@ -109,13 +113,13 @@ class AuthorizationController {
                 next(err);
                 return;
             }
-            const checkPassword = await bcryptH.check(password, account.password);
+            const checkPassword = await bcryptH.check(password, account.Password);
             if (!checkPassword) {
                 let err = Error('Password is wrong!');
                 next(err);
                 return;
             }
-            const tokens = jwtH.generateTokens(account);
+            const tokens = jwtH.generateTokens(username, expAccessToken);
             await accountModel.updateRefreshToken(username, tokens.refreshToken);
             res.cookie("accessToken", tokens.accessToken);
             res.cookie("username", username);
@@ -130,8 +134,7 @@ class AuthorizationController {
     async getTokens(req, res, next) {
         const username = req.body.username;
         try {
-            const account = await accountModel.getAccount(username);
-            const tokens = jwtH.generateTokens(account);
+            const tokens = jwtH.generateTokens(username, '5m');
             res.json(tokens);
 
         } catch (error) {

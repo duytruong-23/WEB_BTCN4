@@ -8,7 +8,7 @@ const cookieParser = require('cookie-parser');
 dotenv.config({
     path: './.env'
 });
-
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 
 const route = require('./server_routes');
 const handlebars = require('./configs/HandlebarsConfig');

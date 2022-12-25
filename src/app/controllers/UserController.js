@@ -1,26 +1,11 @@
 const userModel = require('../models/user');
 const { getAccount } = require('../models/user');
 const bcrypt = require('../../helpers/bcrypt_helpers');
+require('dotenv').config({ path: './src/.env' });
+
+
 
 class UserController {
-    //[GET] /user/signup
-    showSignUpForm(req, res) {
-        if (req.isAuthenticated()) {
-            res.redirect('account');
-            return;
-        }
-        res.render('user/signup');
-    }
-
-    //[GET] /user/signin
-    showSignInForm(req, res) {
-        if (req.isAuthenticated()) {
-            res.redirect('account');
-            return;
-        }
-        res.render('user/signin');
-    }
-
 
     //[GET] /user/account
     async showInfo(req, res, next) {
@@ -28,10 +13,9 @@ class UserController {
             const username = req.username;
             const account = await userModel.getAccount(username);
             res.render('user/account', {
-                username: account.f_Username,
-                email: account.f_Email,
-                birthdate: account.f_DOB,
-                fullname: account.f_Name
+                username: account.Username,
+                fullname: account.FullName,
+                address: account.Address
             })
 
         } catch (err) {
@@ -41,13 +25,7 @@ class UserController {
 
     //[GET] /user/signout
     signOut(req, res, next) {
-        // req.logout(function (err) {
-        //     if (err) {
-        //         return next(err);
-        //     }
-        // });
-        // res.redirect('/');
-        res.redirect(`https://localhost:54321/authorization/signout/${req.cookies.username}?callbackURL=https://localhost:3000`)
+        res.redirect(`${process.env.AUTH_SERVER_URL}/authorization/signout/${req.cookies.username}?callbackURL=${process.env.CALLBACK_URL}`)
     }
 
 

@@ -4,7 +4,8 @@
             <article class="card-body w-75">
                 <h4 class="card-title mt-3 text-center">Sign In</h4>
                 <p class="text-center">Get started with your free account</p>
-                <form method="post" action="/user/signin" id="signin-form">
+                <form method="post" action="/authorization/signin" id="signin-form">
+                    <input type="text" value="{{callbackURL}}" name="callbackURL" hidden>
                     <div class="form-group input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><b>Username:</b></span>
@@ -20,6 +21,20 @@
                             type="password">
                         <div class="form-message"></div>
                     </div> <!-- form-group// -->
+
+                    <div class="form-group input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <b>Expire:</b> </span>
+                        </div>
+                        <select class="form-control" name="expire">
+                            <option selected name="5m">5m</option>
+                            <option name="10m">10m</option>
+                            <option name="15m">15m</option>
+                            <option name="30m">30m</option>
+                            <option name="1h">1h</option>
+                        </select>
+                        <div class="form-message"></div>
+                    </div> <!-- form-group end.// -->
                     <div class="form-group mt-2 d-flex flex-column align-items-center">
                         <button type="submit" class="btn btn-primary btn-block"> Sign in </button>
                     </div> <!-- form-group// -->

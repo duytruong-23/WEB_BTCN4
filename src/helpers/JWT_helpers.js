@@ -13,5 +13,28 @@ module.exports = {
             return true;
         }
         return false;
+    },
+
+    generateTokens: (username, expAccessToken) => {
+        const payload = {
+            username,
+        };
+        const accessToken = jwt.sign(
+            payload,
+            process.env.ACCESS_TOKEN_SECRET,
+            {
+                expiresIn: expAccessToken || '5m'
+            }
+        )
+
+        const refreshToken = jwt.sign(
+            payload,
+            process.env.REFRESH_TOKEN_SECRET,
+            {
+                expiresIn: '2h'
+            }
+        )
+
+        return { accessToken, refreshToken }
     }
 }
