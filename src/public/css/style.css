@@ -1,0 +1,50 @@
+.input-group-prepend {
+    flex-basis: 15%;
+}
+
+.glyphicon {
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+
+.form-group.invalid .form-control {
+    border-color: #f33a58;
+}
+
+.form-group.invalid .form-message {
+    color: #f33a58;
+}
+
+.form-message {
+    flex-basis: 100%;
+    font-size: 0.8rem;
+    line-height: 1.6rem;
+    padding: 0 0 0.5rem;
+}
+
+.category-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.category-btn-add {
+    color: #fff;
+    font-weight: 500;
+}
+
+.category-btn-add:hover {
+    opacity: 0.5;
+}
+
+.text-gray {
+    color: #aaa
+}
+
+.product-thumbnail {
+    height: 170px;
+    width: 140px
+}
+
+.list-group-item {
+    display: flex;
+}

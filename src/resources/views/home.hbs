@@ -1,0 +1,41 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card rounded-0">
+      <div class="card-header text-bg-primary rounded-0 category-header">List Category
+      </div>
+      <div class="card-body d-flex flex-column">
+        <table class="table table-striped text-sm-center" id="table">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each categories}}
+            <tr>
+              <th scope="row">{{CatID}}</th>
+              <td>{{CatName}}</td>
+              <td>
+                <a href="/category/detail?CatID={{CatID}}&CatName={{CatName}}">detail</a>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+
+
+
+        <div class="btn-group align-self-center" id="btn-group" role="group" aria-label="Basic outlined example">
+
+          <a href="/page?page=1"><button type="button" class="btn rounded-0 btn-outline-primary"
+              value="1">1</button></a>
+          <a href="/page?page=2"><button type="button" class="btn rounded-0 btn-outline-primary"
+              value="2">2</button></a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

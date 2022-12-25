@@ -1,0 +1,43 @@
+<div class="row text-center text-black mb-5">
+    <div class="col-7 mx-auto">
+        <h1>{{CatName}}</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-4 offset-4 d-flex justify-content-center mb-3">
+        <a class="btn btn-primary" href="/product/add?CatID={{CatID}}" role="button">Add</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <!-- List group-->
+        <ul class="list-group shadow">
+            <!-- list group item-->
+            {{#each products}}
+            <li class="list-group-item">
+                <!-- Custom content-->
+                <a href="/product/thumbnail?ProID={{ProID}}&&CatID={{CatID}}">
+                    <img class="product-thumbnail" src="../img/pid/{{ProID}}/main.jpg" alt="{{ProID}}" width="200"
+                        class="ml-lg-5 order-1 order-lg-2">
+                </a>
+                <div class="media align-items-center p-3">
+                    <div class="media-body order-2 order-lg-1">
+                        <h5 class="mt-0 font-weight-bold mb-2">{{ProName}}</h5>
+                        <p class="font-italic text-muted mb-0 small">{{TinyDes}}</p>
+                        <p class="font-italic text-muted mb-0 small">{{{FullDes}}}</p>
+                        <p class="font-italic text-muted mb-0 small">Quantity: {{Quantity}}</p>
+                        <div class="d-flex align-items-center justify-content-between mt-1">
+                            <h6 class="font-weight-bold my-2">Price: {{Price}}</h6>
+
+                        </div>
+                    </div>
+                    <a href="/product/delete?ProID={{ProID}}&&CatID={{CatID}}"
+                        onclick="return confirm('Are you sure you want to delete category with id is {{ProName}}')">Delete</a>
+                </div> <!-- End -->
+            </li> <!-- End -->
+            {{/each}}
+        </ul> <!-- End -->
+    </div>
+</div>

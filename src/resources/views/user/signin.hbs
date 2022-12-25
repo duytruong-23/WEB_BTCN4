@@ -1,0 +1,51 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light align-items-center">
+            <article class="card-body w-75">
+                <h4 class="card-title mt-3 text-center">Sign In</h4>
+                <p class="text-center">Get started with your free account</p>
+                <form method="post" action="/user/signin" id="signin-form">
+                    <div class="form-group input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><b>Username:</b></span>
+                        </div>
+                        <input id="username" name="username" class="form-control" placeholder="Username" type="text">
+                        <div class="form-message"></div>
+                    </div> <!-- form-group// -->
+                    <div class="form-group input-group mt-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <b>Password:</b> </span>
+                        </div>
+                        <input id="password" name="password" class="form-control" placeholder="Password"
+                            type="password">
+                        <div class="form-message"></div>
+                    </div> <!-- form-group// -->
+                    <div class="form-group mt-2 d-flex flex-column align-items-center">
+                        <button type="submit" class="btn btn-primary btn-block"> Sign in </button>
+                    </div> <!-- form-group// -->
+                </form>
+            </article>
+        </div> <!-- card.// -->
+    </div>
+</div>
+
+<script src="../js/form.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        Validator({
+            form: '#signin-form',
+            formGroupSelector: '.form-group',
+            errorSelector: '.form-message',
+            rules: [
+                Validator.isRequired('#username', 'Vui lòng nhập username'),
+
+                Validator.isRequired('#password', 'Vui lòng nhập mật khẩu'),
+
+                Validator.isValidUsername('#username'),
+                Validator.isValidPassword('#password'),
+
+
+            ],
+        })
+    });
+</script>
