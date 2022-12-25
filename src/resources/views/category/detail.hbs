@@ -4,11 +4,6 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-4 offset-4 d-flex justify-content-center mb-3">
-        <a class="btn btn-primary" href="/product/add?CatID={{CatID}}" role="button">Add</a>
-    </div>
-</div>
 
 <div class="row">
     <div class="col-lg-8 mx-auto">
@@ -18,26 +13,30 @@
             {{#each products}}
             <li class="list-group-item">
                 <!-- Custom content-->
-                <a href="/product/thumbnail?ProID={{ProID}}&&CatID={{CatID}}">
-                    <img class="product-thumbnail" src="../img/pid/{{ProID}}/main.jpg" alt="{{ProID}}" width="200"
-                        class="ml-lg-5 order-1 order-lg-2">
-                </a>
+
                 <div class="media align-items-center p-3">
                     <div class="media-body order-2 order-lg-1">
-                        <h5 class="mt-0 font-weight-bold mb-2">{{ProName}}</h5>
-                        <p class="font-italic text-muted mb-0 small">{{TinyDes}}</p>
-                        <p class="font-italic text-muted mb-0 small">{{{FullDes}}}</p>
-                        <p class="font-italic text-muted mb-0 small">Quantity: {{Quantity}}</p>
+                        <h5 class="mt-0 font-weight-bold mb-2">{{ProductName}}</h5>
+                        <p class="font-italic text-muted mb-0 small">Quantity: {{UnitStock}}</p>
                         <div class="d-flex align-items-center justify-content-between mt-1">
-                            <h6 class="font-weight-bold my-2">Price: {{Price}}</h6>
+                            <h6 class="font-weight-bold my-2">Price: {{UnitPrice}}</h6>
 
                         </div>
                     </div>
-                    <a href="/product/delete?ProID={{ProID}}&&CatID={{CatID}}"
-                        onclick="return confirm('Are you sure you want to delete category with id is {{ProName}}')">Delete</a>
                 </div> <!-- End -->
             </li> <!-- End -->
             {{/each}}
         </ul> <!-- End -->
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-6 offset-3 d-flex justify-content-center mt-3">
+        <div class="btn-group align-self-center" id="btn-group" role="group" aria-label="Basic outlined example">
+            {{#each page}}
+            <a href="/category/detail/?page={{number}}&CatID={{CatID}}&CatName={{CatName}}"><button type="button"
+                    class="btn rounded-0 btn-outline-primary" value="{{number}}">{{number}}</button></a>
+            {{/each}}
+        </div>
     </div>
 </div>

@@ -15,10 +15,10 @@
           <tbody>
             {{#each categories}}
             <tr>
-              <th scope="row">{{CatID}}</th>
-              <td>{{CatName}}</td>
+              <th scope="row">{{CategoryID}}</th>
+              <td>{{CategoryName}}</td>
               <td>
-                <a href="/category/detail?CatID={{CatID}}&CatName={{CatName}}">detail</a>
+                <a href="/category/detail?page=1&CatID={{CategoryID}}&CatName={{CategoryName}}">detail</a>
               </td>
             </tr>
             {{/each}}
@@ -28,12 +28,10 @@
 
 
         <div class="btn-group align-self-center" id="btn-group" role="group" aria-label="Basic outlined example">
-
-          <a href="/page?page=1"><button type="button" class="btn rounded-0 btn-outline-primary"
-              value="1">1</button></a>
-          <a href="/page?page=2"><button type="button" class="btn rounded-0 btn-outline-primary"
-              value="2">2</button></a>
-
+          {{#each page}}
+          <a href="/page?page={{this}}"><button type="button" class="btn rounded-0 btn-outline-primary"
+              value="{{this}}">{{this}}</button></a>
+          {{/each}}
         </div>
       </div>
     </div>
