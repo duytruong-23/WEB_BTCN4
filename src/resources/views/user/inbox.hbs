@@ -1,34 +1,83 @@
-<div class="row">
-    <div class="col-12">
-        <ul id="messages"></ul>
-        <form id="form" action="">
-            <span style="display: none;">{{username}}</span>
-            <input id="input" autocomplete="off" /><button>Send</button>
-        </form>
-    </div>
-</div>
+<section style="background-color: #eee;">
+    <div class="container py-5">
+
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-8 col-lg-6 col-xl-4">
+
+                <div class="card">
+
+                    <div class="card-body" data-mdb-perfect-scrollbar="true"
+                        style="position: relative; height: 400px; overflow:auto;" id="chat-box">
+
+
+
+                    </div>
+                    <span class="d-none" id="username">{{username}}</span>
+                    <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3">
+                        <div class="input-group mb-0">
+                            <input type="text" class="form-control" placeholder="Type message" id="input" />
+                            <button class="btn btn-warning" type="button" id="send-btn" style="padding-top: .55rem;">
+                                Send
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+</section>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
     let socket = io();
 
-    let form = document.getElementById('form');
+    let form = document.getElementById('send-btn');
     let input = document.getElementById('input');
+    let username = document.getElementById('username').innerHTML;
 
-    form.addEventListener('submit', function (e) {
+    form.addEventListener('click', function (e) {
         e.preventDefault();
         if (input.value) {
             socket.emit('chat message', {
-                username: 
+                username,
+                message: input.value
             });
             input.value = '';
         }
     });
 
     socket.on('chat message', function (msg) {
-        let item = document.createElement('li');
-        item.textContent = msg;
-        messages.appendChild(item);
-        window.scrollTo(0, document.body.scrollHeight);
+        let item = "";
+        if (msg.username === username) {
+            item = `
+            <div class="d-flex justify-content-between">
+                            <p class="small mb-1 text-muted"></p>
+                            <p class="small mb-1">${msg.username}</p>
+                        </div>
+                        <div class="d-flex flex-row justify-content-end mb-4 pt-1">
+                            <div>
+                                <p class="small p-2 me-3 mb-3 text-white rounded-3 bg-warning">
+                                    ${msg.message}
+                                </p>
+                            </div>
+                        </div>
+            `
+        }
+        else {
+            item = `
+            <div class="d-flex justify-content-between">
+                            <p class="small mb-1">${msg.username}</p>
+                        </div>
+                        <div class="d-flex flex-row justify-content-start">
+                            <div>
+                                <p class="small p-2 ms-3 mb-3 rounded-3" style="background-color: #f5f6f7;">
+                                    ${msg.message}
+                                </p>
+                            </div>
+                        </div>
+            `
+        }
+        const chatBox = document.getElementById('chat-box');
+        chatBox.innerHTML += item;
     });
 </script>
