@@ -60,7 +60,7 @@ class AuthorizationController {
     showSignUpForm(req, res, next) {
         res.render('user/signup', {
             layout: 'main2',
-            showHeader: false,
+            showHeader: true,
         });
     }
 

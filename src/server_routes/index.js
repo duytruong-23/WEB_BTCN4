@@ -4,6 +4,7 @@ const userRouter = require('./UserRouter');
 const categoryRouter = require('./CategoryRouter');
 const productRouter = require('./ProductRouter');
 const authorizationRouter = require('./AuthorizationRouter');
+const orderRouter = require('./OrderRouter');
 
 function route(app) {
 
@@ -12,6 +13,7 @@ function route(app) {
     app.use('/category', categoryRouter);
     app.use('/product', productRouter);
     app.use('/authorization', authorizationRouter);
+    app.use('/order', orderRouter);
     app.use('/', homeRouter);
 
 

@@ -4,6 +4,13 @@
     </div>
 </div>
 
+<div class="row position-fixed">
+    <div class="col-12">
+        <i class="fa" style="font-size:30px">🛒</i>
+        <span class='badge badge-warning' id='lblCartCount'> 0 </span>
+    </div>
+</div>
+
 
 <div class="row">
     <div class="col-lg-8 mx-auto">
@@ -17,11 +24,12 @@
                 <div class="media align-items-center p-3">
                     <div class="media-body order-2 order-lg-1">
                         <h5 class="mt-0 font-weight-bold mb-2">{{ProductName}}</h5>
-                        <p class="font-italic text-muted mb-0 small">Quantity: {{UnitStock}}</p>
+                        <p class="font-italic text-muted mb-0 small">Quantity: {{UnitsInStock}}</p>
                         <div class="d-flex align-items-center justify-content-between mt-1">
                             <h6 class="font-weight-bold my-2">Price: {{UnitPrice}}</h6>
-
                         </div>
+                        <button type="button" class="btn btn-info btn-add" onclick="handleClick({{ProductID}})">Add to
+                            cart</button>
                     </div>
                 </div> <!-- End -->
             </li> <!-- End -->
@@ -40,3 +48,35 @@
         </div>
     </div>
 </div>
+
+<script>
+    function handleClick(ProductID) {
+        const quantityOrders = document.getElementById("lblCartCount");
+        const URL = "http://localhost:20232/order/";
+        fetch(URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ ProductID }),
+        }).then(response => {
+            console.log(response);
+            response.json()
+        }).then(data => {
+            console.log(data);
+            quantityOrders.innerHTML = parseInt(quantityOrders.innerHTML) + 1;
+        });
+    }
+</script>
+
+<script>
+    window.addEventListener("DOMContentLoaded", function () {
+        const quantityOrders = document.getElementById("lblCartCount");
+        const URL = "http://localhost:20232/order/"
+        fetch(URL)
+            .then(response => response.json())
+            .then(data => {
+                quantityOrders.innerHTML = data.result;
+            });
+    });
+</script>

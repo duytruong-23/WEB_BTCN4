@@ -2,8 +2,10 @@ const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
 const fs = require('fs');
-const https = require('https');
 const dotenv = require('dotenv');
+const { Server } = require("socket.io");
+const http = require('http');
+
 const cookieParser = require('cookie-parser');
 dotenv.config({
     path: './.env'
@@ -16,7 +18,8 @@ const handlebars = require('./configs/HandlebarsConfig');
 
 const app = express();
 const port = process.env.SERVER_PORT || 54321;
-
+const server = http.createServer(app);
+const io = new Server(server);
 app.use(cookieParser());
 
 
@@ -48,6 +51,12 @@ app.use((err, req, res, next) => {
         .send(statusCode + " " + err.message);
 });
 
-app.listen(port, () => {
+io.on('connection', (socket) => {
+    socket.on('chat message', (msg) => {
+        io.emit('chat message', msg);
+    });
+});
+
+server.listen(port, () => {
     console.log(`Example app listening on http://localhost:${port}`);
 });

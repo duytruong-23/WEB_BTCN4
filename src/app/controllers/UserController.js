@@ -23,6 +23,13 @@ class UserController {
         }
     }
 
+    //[GET] /user/inbox
+    inbox(req, res, next) {
+        res.render('user/inbox', {
+            username: req.cookies.username
+        });
+    }
+
     //[GET] /user/signout
     signOut(req, res, next) {
         res.redirect(`${process.env.AUTH_SERVER_URL}/authorization/signout/${req.cookies.username}?callbackURL=${process.env.CALLBACK_URL}`)
